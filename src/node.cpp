@@ -214,6 +214,9 @@ void RecorderNode::compress_video(bool is_record) {
 }
 
 void RecorderNode::regular_clean() {
+    if(!fs::exists(save_dir_)){
+        return;
+    }
     std::string cmd = fmt::format("{} {}/scripts/regular_clean.py --dataset {}", python_interpeter_, project_root_, save_dir_);
     int ret = std::system(cmd.c_str());
     if(ret != 0){
