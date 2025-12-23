@@ -66,7 +66,7 @@ void RecorderNode::configuration() {
     configuration_camera();
     configuration_client();
 
-    int ret = std::system("{} {}/scripts/find_host.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_);
+    int ret = std::system(fmt::format("{} {}/scripts/find_host.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_).c_str());
     if(ret != 0){
         ROS_ERROR_STREAM("find host failed");
     }
