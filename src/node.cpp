@@ -181,11 +181,14 @@ void RecorderNode::compress_video(bool is_record) {
     auto &writers = is_record ? record_video_writers_ : collect_video_writers_;
     auto &save_files = is_record ? record_save_files_ : collect_save_files_;
 
-    if(save_files.size() == 0){
+    if(save_files.size() == 0 || writers.size() == 0){
         return;
     }
 
     for(int i = 0; i < camera_config_["cameras"].size(); i++){
+        if(!fs::exists(save_files[i])){
+            continue;
+        }
         float file_size = fs::file_size(save_files[i]) / 1024.0 / 1024.0;
         if(file_size > slice_){
             if(is_record){
@@ -295,12 +298,14 @@ void RecorderNode::run() {
             writer_->release();
         }
         record_video_writers_.clear();
+        record_save_files_.clear();
     }
     if(!is_running_collect){
         for(auto &writer_: collect_video_writers_){
             writer_->release();
         }
         collect_video_writers_.clear();
+        collect_save_files_.clear();
     }
     if(!is_running_record && !is_running_collect){
         return;

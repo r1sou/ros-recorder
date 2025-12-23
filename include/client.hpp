@@ -149,7 +149,7 @@ public:
             return;
         }
 
-        ROS_INFO_STREAM("Received message: " << data.dump(4));
+        // ROS_INFO_STREAM("Received message: " << data.dump(4));
 
         if(data["cmd_code"] != 0x14){
             return;
