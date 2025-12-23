@@ -1,7 +1,7 @@
 import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import netifaces
-import json
+import os,json
 import argparse
 
 def get_wired_ip():
