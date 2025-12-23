@@ -6,16 +6,6 @@ void RecorderNode::parameter_configuration() {
         std::ifstream file(launch_file_path_);
         file >> launch_config_;
     }
-    {
-        camera_config_path_ = CAMERA_FILE_PATH;
-        std::ifstream file(camera_config_path_);
-        file >> camera_config_;
-    }
-    {
-        client_config_path_ = CLIENT_FILE_PATH;
-        std::ifstream file(client_config_path_);
-        file >> client_config_;
-    }
     // parse params
     {
         project_root_ = PROJECT_ROOT;
@@ -60,16 +50,27 @@ void RecorderNode::parameter_configuration() {
 
         ROS_INFO_STREAM("python interpeter: " << python_interpeter_);
     }
+    {
+        int ret = std::system(fmt::format("{} {}/scripts/find_host.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_).c_str());
+        if(ret != 0){
+            ROS_ERROR_STREAM("find host failed");
+        }
+        {
+            camera_config_path_ = CAMERA_FILE_PATH;
+            std::ifstream file(camera_config_path_);
+            file >> camera_config_;
+        }
+        {
+            client_config_path_ = CLIENT_FILE_PATH;
+            std::ifstream file(client_config_path_);
+            file >> client_config_;
+        }
+    }
 }
 
 void RecorderNode::configuration() {
     configuration_camera();
     configuration_client();
-
-    int ret = std::system(fmt::format("{} {}/scripts/find_host.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_).c_str());
-    if(ret != 0){
-        ROS_ERROR_STREAM("find host failed");
-    }
 }
 
 void RecorderNode::configuration_camera() {

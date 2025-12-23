@@ -4,7 +4,7 @@
     "show": false,
     "debug": false,
     "slice": 500,
-    "save_dir": "/home/r1sou/Desktop/dataset",
+    "save_dir": "/home/swbot/Desktop/dataset",
     "fps": 10,
     "python": "/home/swbot/anaconda3/bin/python"
 }
