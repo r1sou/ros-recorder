@@ -1,0 +1,11 @@
+{
+    "cameras": [
+        {
+            "name": "camera",
+            "topic": {
+                "image_raw": "/image_raw"
+            },
+            "shape": [640, 480]
+        }
+    ]
+}

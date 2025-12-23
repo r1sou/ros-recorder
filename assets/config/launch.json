@@ -1,0 +1,10 @@
+{
+    "fourcc": 0,
+    "compress": false,
+    "show": false,
+    "debug": false,
+    "slice": 500,
+    "save_dir": "/home/r1sou/Desktop/dataset",
+    "fps": 10,
+    "python": "/home/swbot/anaconda3/bin/python"
+}
