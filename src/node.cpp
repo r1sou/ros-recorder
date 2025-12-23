@@ -6,6 +6,10 @@ void RecorderNode::parameter_configuration() {
         std::ifstream file(launch_file_path_);
         file >> launch_config_;
     }
+    {
+        camera_config_path_ = CAMERA_FILE_PATH;
+        client_config_path_ = CLIENT_FILE_PATH;
+    }
     // parse params
     {
         project_root_ = PROJECT_ROOT;
@@ -56,12 +60,10 @@ void RecorderNode::parameter_configuration() {
             ROS_ERROR_STREAM("find host failed");
         }
         {
-            camera_config_path_ = CAMERA_FILE_PATH;
             std::ifstream file(camera_config_path_);
             file >> camera_config_;
         }
         {
-            client_config_path_ = CLIENT_FILE_PATH;
             std::ifstream file(client_config_path_);
             file >> client_config_;
         }
