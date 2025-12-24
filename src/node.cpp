@@ -60,12 +60,20 @@ void RecorderNode::parameter_configuration() {
             ROS_ERROR_STREAM("find host failed");
         }
         {
-            std::ifstream file(camera_config_path_);
-            file >> camera_config_;
-        }
-        {
             std::ifstream file(client_config_path_);
             file >> client_config_;
+            ROS_INFO_STREAM("client config: " << client_config_.dump(4));
+        }
+    }
+    {
+        int ret = std::system(fmt::format("{} {}/scripts/update_shape.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_).c_str());
+        if(ret != 0){
+            ROS_ERROR_STREAM("update shape failed");
+        }
+        {
+            std::ifstream file(camera_config_path_);
+            file >> camera_config_;
+            ROS_INFO_STREAM("camera config: " << camera_config_.dump(4));
         }
     }
 }
