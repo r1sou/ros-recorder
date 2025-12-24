@@ -66,7 +66,7 @@ void RecorderNode::parameter_configuration() {
         }
     }
     {
-        int ret = std::system(fmt::format("{} {}/scripts/update_shape.py --config_dir {}/assets/config",python_interpeter_, project_root_, project_root_).c_str());
+        int ret = std::system(fmt::format("python2 {}/scripts/update_shape.py --config_dir {}/assets/config", project_root_, project_root_).c_str());
         if(ret != 0){
             ROS_ERROR_STREAM("update shape failed");
         }
