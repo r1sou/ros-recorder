@@ -1,4 +1,4 @@
-import argparse,subprocess
+import argparse,subprocess32
 
 import os,json,yaml
 
@@ -6,10 +6,11 @@ ros_build = "melodic"
 
 def update_topic_shape(topic):
     cmd = "source /opt/ros/{ros_build}/setup.bash && rostopic echo {topic} -n 1 --noarr".format(ros_build=ros_build, topic=topic)
-    result = subprocess.check_output(
+    result = subprocess32.check_output(
         cmd,
         shell=True,
         executable="/bin/bash",
+        timeout=5
     )
     result = yaml.safe_load(result[:-4])
     shape = [result["width"], result["height"]]
