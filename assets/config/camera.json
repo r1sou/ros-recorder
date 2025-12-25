@@ -1,0 +1,14 @@
+{
+    "cameras": [
+        {
+            "name": "front-camera",
+            "topic": {
+                "image_raw": "/image_combine_raw"
+            },
+            "shape": [
+                1280,
+                1440
+            ]
+        }
+    ]
+}
