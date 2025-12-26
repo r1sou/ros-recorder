@@ -6,15 +6,19 @@ ros_build = "melodic"
 
 def update_topic_shape(topic):
     cmd = "source /opt/ros/{ros_build}/setup.bash && rostopic echo {topic} -n 1 --noarr".format(ros_build=ros_build, topic=topic)
-    result = subprocess32.check_output(
-        cmd,
-        shell=True,
-        executable="/bin/bash",
-        timeout=5
-    )
-    result = yaml.safe_load(result[:-4])
-    shape = [result["width"], result["height"]]
-    return shape
+    try:
+        result = subprocess32.check_output(
+            cmd,
+            shell=True,
+            executable="/bin/bash",
+            timeout=5
+        )
+        result = yaml.safe_load(result[:-4])
+        shape = [result["width"], result["height"]]
+        return shape
+    except Exception as e:
+        print("please make sure the topic {topic} is exist".format(topic=topic))
+        return None
 
 def auto_update_shape(args):
     camera_config_path = os.path.join(args.config_dir, 'camera.json')
