@@ -25,24 +25,20 @@ def generate_launch_description():
     root = get_package_share_directory('recorder')
 
     node_params = [
-        {"name": "node_name", "default_value": "collect_node"},
+        {"name": "node_name", "default_value": "recorder_node"},
         {"name": "log_level", "default_value": "info"},
 
         {"name": "project_root", "default_value": root},
-        {"name": "client_config_path", "default_value": os.path.join(root, 'config', 'client.json')},
-        {"name": "camera_config_path", "default_value": os.path.join(root, 'config', 'camera.json')},
-
         {"name": "save_dir", "default_value": "/home/sunrise/Desktop/dataset"},
 
+        {"name": "collect", "default_value": "False"},
+        {"name": "record", "default_value": "False"},
+
         {"name": "fourcc", "default_value": "0"},
-        {"name": "slice", "default_value": "500"},
         {"name": "fps", "default_value": "10"},
 
-        {"name": "compress", "default_value": "False"},
         {"name": "show", "default_value": "False"},
         {"name": "debug", "default_value": "False"},
-
-        {"name": "python_interpeter", "default_value": "python3"}
     ]
 
     launch = declare_configurable_parameters(node_params)

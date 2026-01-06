@@ -1,4 +1,4 @@
-#include "node.h"
+#include "node/node.h"
 
 int main(int argc, char **argv){
     rclcpp::init(argc, argv);
@@ -8,10 +8,7 @@ int main(int argc, char **argv){
 
     rclcpp::WallRate loop_rate(10);
 
-    while(rclcpp::ok()){
-        node->run();
-        loop_rate.sleep();
-    }
+    node->run();
 
     rclcpp::shutdown();
     cv::destroyAllWindows();

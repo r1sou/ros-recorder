@@ -45,3 +45,19 @@
 #include "opencv2/core.hpp"
 
 #include "rclcpp/rclcpp.hpp"
+
+class ScopeTimer{
+public:
+    ScopeTimer(std::string name): name(name){
+        start = std::chrono::system_clock::now();
+    }
+    ~ScopeTimer(){
+        auto end = std::chrono::system_clock::now();
+        const std::chrono::duration<float, std::milli> duration = end - start;
+        std::string info = fmt::format("\033[32mScope {} end, duration: {:.3f}ms\033[0m", name, duration.count());
+        RCLCPP_INFO_STREAM(rclcpp::get_logger("ScopeTimer"), info.c_str());
+    }
+public:
+    std::string name;
+    std::chrono::system_clock::time_point start;
+};

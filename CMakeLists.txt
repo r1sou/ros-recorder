@@ -4,7 +4,7 @@ project(recorder)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "-pthread -O3")
+set(CMAKE_CXX_FLAGS "-pthread -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
 
 find_package(fmt REQUIRED)
 find_package(OpenSSL REQUIRED)
@@ -16,40 +16,49 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 
+find_package(hobot_cv REQUIRED)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/assets/3rdparty/nlohmann/include
     ${CMAKE_CURRENT_SOURCE_DIR}/assets/3rdparty/websocketpp/include
 )
 
-function(add_project_executable target_name)
-    add_executable(${target_name} ${ARGN})
-    ament_target_dependencies(${target_name}
-        rclcpp
-        cv_bridge
-        std_msgs
-        sensor_msgs
-    )
+include_directories(
+    /usr/hobot/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/3rdparty/hobotcv_neon_blur/include
+)
+link_directories(
+    /usr/hobot/lib/                                                   # Nano2D Nano2Dutil vpf cjson
+    /usr/aarch64-linux-gnu/lib                                        # dl
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/3rdparty/hobotcv_neon_blur/lib # hobotcv_neon_blur
+)
+SET(VPS_LIBS cjson dl)
+SET(NEON_LIBS  Nano2D Nano2Dutil vpf hobotcv_neon_blur)
 
-    target_link_libraries(${target_name}
-        ${OpenCV_LIBRARIES}
-        ${OPENSSL_LIBRARIES}
-        pthread
-        fmt
-    )
-
-    install(TARGETS ${target_name}
-        DESTINATION lib/${PROJECT_NAME}
-    )
-endfunction()
-
-file(GLOB SRC_FILES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+add_executable(${PROJECT_NAME}_node 
+    src/main.cpp
 )
 
-add_project_executable(${PROJECT_NAME}_node
-    ${SRC_FILES}
+ament_target_dependencies(${PROJECT_NAME}_node
+    rclcpp
+    cv_bridge
+    std_msgs
+    sensor_msgs
+    hobot_cv
 )
+
+target_link_libraries(${PROJECT_NAME}_node
+    ${OpenCV_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
+    pthread
+    fmt
+)
+
+install(TARGETS ${PROJECT_NAME}_node
+    DESTINATION lib/${PROJECT_NAME}
+)
+
 
 file(GLOB LAUNCH_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/launch/launch.py
@@ -57,6 +66,5 @@ file(GLOB LAUNCH_FILES
 install(FILES ${LAUNCH_FILES} DESTINATION share/${PROJECT_NAME}/launch)
 install(DIRECTORY assets/config DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY scripts DESTINATION share/${PROJECT_NAME})
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 ament_package()
