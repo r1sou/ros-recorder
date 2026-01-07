@@ -35,6 +35,7 @@ def generate_launch_description():
         {"name": "record", "default_value": "False"},
 
         {"name": "fourcc", "default_value": "0"},
+        {"name": "suffix", "default_value": "mp4"},
         {"name": "fps", "default_value": "10"},
 
         {"name": "show", "default_value": "False"},

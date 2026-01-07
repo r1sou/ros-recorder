@@ -33,7 +33,7 @@ public:
         this->fourcc_ = this->declare_parameter<int>("fourcc", 0);
         RCLCPP_INFO_STREAM(this->get_logger(), "fourcc: " << this->fourcc_ << " | 0: XVID, 1: MJPG, 2: H264, 3: H265");
 
-        this->suffix_ = fourcc_ < 2 ? ".avi" : ".mp4";
+        this->suffix_ = this->declare_parameter<std::string>("suffix", "avi");
         RCLCPP_INFO_STREAM(this->get_logger(), "suffix: " << this->suffix_);
         
         this->fps_ = this->declare_parameter<int>("fps", 10);
@@ -124,11 +124,11 @@ public:
     }
     void run(){
         if((collect_ || debug_) && !collect_writers_){
-            std::string filename = save_dir_ + "/" + get_string_date(2) + "-collect" + suffix_;
+            std::string filename = save_dir_ + "/" + get_string_date(2) + "-collect." + suffix_;
             collect_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(640, 352));
         }
         if((record_ || debug_) && !record_writers_){
-            std::string filename = save_dir_ + "/" + get_string_date(2) + "-record" + suffix_;
+            std::string filename = save_dir_ + "/" + get_string_date(2) + "-record." + suffix_;
             record_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(640, 352));
         }
 
