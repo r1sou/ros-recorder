@@ -96,13 +96,20 @@ public:
             }
         }
         worker_threads_.clear();
+        RCLCPP_INFO_STREAM(this->get_logger(), "worker threads joined");
         {
-            collect_writers_->release();
-            record_writers_->release();
+            if(collect_writers_){
+                collect_writers_->release();
+            }
+            if(record_writers_){
+                record_writers_->release();
+            }
         }
+        RCLCPP_INFO_STREAM(this->get_logger(), "video writers released");
         if(spin_thread_.joinable()){
             spin_thread_.join();
         }
+        RCLCPP_INFO_STREAM(this->get_logger(), "spin thread joined");
     }
 public:
     std::string get_string_date(int level) {
@@ -124,7 +131,7 @@ public:
     }
     void run(){
         static int image_H = 352, image_W = 640;
-        
+
         while(true){
             auto element = buffer_->read();
             if (!element || !element->msg){
