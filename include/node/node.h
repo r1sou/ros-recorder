@@ -131,6 +131,7 @@ public:
     }
     void run(){
         static int image_H = 352, image_W = 640;
+        static int record_frame_count = 0, collect_frame_count = 0;
 
         while(true){
             auto element = buffer_->read();
@@ -170,16 +171,18 @@ public:
             }
             if(collect_ || debug_){
                 collect_writers_->write(image);
+                collect_frame_count++;
             }
             if(record_ || debug_){
                 record_writers_->write(image);
+                record_frame_count++;
             }
             if(show_){
                 cv::imshow("image", image);
                 cv::waitKey(1);
             }
-            // rate.sleep();
         }
+        RCLCPP_INFO_STREAM(this->get_logger(), "write record frame count: " << record_frame_count << " | collect frame count: " << collect_frame_count);
     }
 private:
     std::string project_root_, save_dir_;
