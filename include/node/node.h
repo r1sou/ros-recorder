@@ -123,13 +123,26 @@ public:
         return oss.str();
     }
     void run(){
+        static int image_H = 352, image_W = 640;
+        
+        while(true){
+            auto element = buffer_->read();
+            if (!element || !element->msg){
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                continue;
+            }
+            image_H = element->msg->height;
+            image_W = element->msg->width;
+            break;
+        }
+
         if((collect_ || debug_) && !collect_writers_){
             std::string filename = save_dir_ + "/" + get_string_date(2) + "-collect." + suffix_;
-            collect_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(640, 352));
+            collect_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(image_W, image_H));
         }
         if((record_ || debug_) && !record_writers_){
             std::string filename = save_dir_ + "/" + get_string_date(2) + "-record." + suffix_;
-            record_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(640, 352));
+            record_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(image_W, image_H));
         }
 
         // rclcpp::WallRate rate(1.0 / fps_);
