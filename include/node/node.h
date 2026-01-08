@@ -153,7 +153,7 @@ public:
             record_writers_ = std::make_shared<cv::VideoWriter>(filename, fourcc_, fps_, cv::Size(image_W, image_H));
         }
 
-        // rclcpp::WallRate rate(1.0 / fps_);
+        rclcpp::WallRate rate(fps_);
         while(rclcpp::ok()){
             auto element = buffer_->read();
             if (!element || !element->msg){
@@ -181,8 +181,11 @@ public:
                 cv::imshow("image", image);
                 cv::waitKey(1);
             }
+            RCLCPP_INFO_STREAM(this->get_logger(), "write record frame count: " << record_frame_count << " | collect frame count: " << collect_frame_count);
+
+            rate.sleep();
         }
-        RCLCPP_INFO_STREAM(this->get_logger(), "write record frame count: " << record_frame_count << " | collect frame count: " << collect_frame_count);
+        // RCLCPP_INFO_STREAM(this->get_logger(), "write record frame count: " << record_frame_count << " | collect frame count: " << collect_frame_count);
     }
 private:
     std::string project_root_, save_dir_;
