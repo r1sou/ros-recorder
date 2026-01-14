@@ -151,12 +151,11 @@ public:
 
         // ROS_INFO_STREAM("Received message: " << data.dump(4));
 
-        if(data["cmd_code"] != 0x14){
-            return;
+        if(data["cmd_code"] == 0x16){
+            start_record.store(data["data"]["cam_record_op"] == 1);
         }
-
-        start_collect.store(data["data"]["collect_cam_dat_op"] == 1);
-        start_record.store(data["data"]["cam_record_op"] == 1);
+        // start_collect.store(data["data"]["collect_cam_dat_op"] == 1);
+        // start_record.store(data["data"]["cam_record_op"] == 1);
     }
 public:
     std::atomic<bool> start_collect{false};

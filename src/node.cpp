@@ -174,10 +174,12 @@ void RecorderNode::send_status() {
     }
     nlohmann::json message;
     message["device_id"] = 1;
-    message["cmd_code"] = 0x14;
+    message["cmd_code"] = 0x16;
     time_t timestamp = time(NULL);
     message["time_stamp"] = timestamp;
-    message["data"]["cam_status"] = client_->start_collect.load() || client_->start_record.load() ? 1 : 0;
+    message["data"]["follow_collect_status"] = 0;
+    message["data"]["identify_collect_status"] = 0;
+    message["data"]["cam_record_status"] = client_->start_record.load();
     message["key"] = JWTGenerator::generate(client_config_["jwt"]["req_id"], client_config_["jwt"]["key"]);
     client_->send_message(message.dump());
 }

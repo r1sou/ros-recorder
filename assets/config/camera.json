@@ -9,16 +9,6 @@
                 640,
                 480
             ]
-        },
-        {
-            "name": "back-camera",
-            "topic": {
-                "image_raw": "/env_back_cam/image_raw"
-            },
-            "shape": [
-                640,
-                480
-            ]
         }
     ]
 }
