@@ -9,6 +9,36 @@
                 640,
                 480
             ]
+        },
+        {
+            "name": "back-camera",
+            "topic": {
+                "image_raw": "/env_back_cam/image_raw"
+            },
+            "shape": [
+                640,
+                480
+            ]
+        },
+        {
+            "name": "left-camera",
+            "topic": {
+                "image_raw": "/env_left_cam/image_raw"
+            },
+            "shape": [
+                640,
+                480
+            ]
+        },
+        {
+            "name": "right-camera",
+            "topic": {
+                "image_raw": "/env_right_cam/image_raw"
+            },
+            "shape": [
+                640,
+                480
+            ]
         }
     ]
 }
